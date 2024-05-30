@@ -32,20 +32,12 @@ class NearEarthObject:
     initialized to an empty collection, but eventually populated in the
     `NEODatabase` constructor.
     """
-    # TODO: How can you, and should you, change the arguments to this constructor?
-    # If you make changes, be sure to update the comments in this file.
 
     def __init__(self, designation, name, diameter, hazardous='N'):
         """Create a new `NearEarthObject`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
         """
-        # TODO: Assign information from the arguments passed to the constructor
-        # onto attributes named `designation`, `name`, `diameter`, and `hazardous`.
-        # You should coerce these values to their appropriate data type and
-        # handle any edge cases, such as a empty name being represented by `None`
-        # and a missing diameter being represented by `float('nan')`.
-
         self.designation = designation
         self.name = name or None
         self.diameter = float(diameter) if diameter else float('nan')
@@ -56,14 +48,10 @@ class NearEarthObject:
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
-        # TODO: Use self.designation and self.name to build a fullname for this object.
         return f'{self.designation}{(" (" + self.name + ")") if self.name else ""}'
 
     def __str__(self):
         """Return `str(self)`."""
-        # TODO: Use this object's attributes to return a human-readable string representation.
-        # The project instructions include one possibility. Peek at the __repr__
-        # method for examples of advanced string formatting.
         return f"NEO {self.fullname} has a diameter of {self.diameter} km and is{'' if self.hazardous else 'not' } potentially hazardous."
 
     def __repr__(self):
@@ -71,6 +59,7 @@ class NearEarthObject:
         return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, " \
                f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
     def serialize(self):
+        """Return dict format for object."""
         return {'name': self.name or '', 
                 'designation': self.designation, 'diameter_km': self.diameter, 'potentially_hazardous': self.hazardous}
 
@@ -89,20 +78,13 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
-    # TODO: How can you, and should you, change the arguments to this constructor?
-    # If you make changes, be sure to update the comments in this file.
 
     def __init__(self, designation, time_str, distance, velocity):
         """Create a new `CloseApproach`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
         """
-        # TODO: Assign information from the arguments passed to the constructor
-        # onto attributes named `_designation`, `time`, `distance`, and `velocity`.
-        # You should coerce these values to their appropriate data type and handle any edge cases.
-        # The `cd_to_datetime` function will be useful.
         self._designation = designation
-        # TODO: Use the cd_to_datetime function for this attribute.
         self.time = cd_to_datetime(time_str)
         self.distance = float(distance)
         self.velocity = float(velocity)
@@ -135,8 +117,10 @@ class CloseApproach:
                f"velocity={self.velocity:.2f}, neo={self.neo!r})"
 
     def to_dict(self):
+        """Return dict format for object."""
         return {'datetime_utc': self.time_str, 'distance_au': self.distance, 'velocity_km_s': self.velocity,
                 'designation': self._designation, 'neo': self.neo.serialize(), 'diameter_km': self.neo.diameter, 'potentially_hazardous': self.neo.hazardous}
     def custom_serialize(self):
+        """Return dict format for object in case dump json."""
         return {'datetime_utc': self.time_str, 'distance_au': self.distance, 'velocity_km_s': self.velocity,
                 'designation': self._designation, 'diameter_km': self.neo.diameter, 'potentially_hazardous': self.neo.hazardous}

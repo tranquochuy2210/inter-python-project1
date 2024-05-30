@@ -39,6 +39,7 @@ class AttributeFilter:
     Concrete subclasses can override the `get` classmethod to provide custom
     behavior to fetch a desired attribute from the given `CloseApproach`.
     """
+
     def __init__(self, op, value):
         """Construct a new `AttributeFilter` from an binary predicate and a reference value.
 
@@ -70,6 +71,7 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
 
@@ -109,7 +111,6 @@ def create_filters(
     :param hazardous: Whether the NEO of a matching `CloseApproach` is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-    # TODO: Decide how you will represent your filters.
     filter_list = []
     if date:
         filter_list.append(DateFilter(operator.eq, date))
@@ -144,36 +145,54 @@ def limit(iterator, n=None):
     :yield: The first (at most) `n` values from the iterator.
     """
     n = n or None
-    return list(itertools.islice(iterator, n))
+    return itertools.islice(iterator, n)
 
 
 class DesignationFilter(AttributeFilter):
+    """Filter Class for Designation."""
+    
     @classmethod
     def get(cls, approach: CloseApproach):
+        """Get desired value from CloseApproach."""
         return approach.neo.designation
     
 class DateFilter(AttributeFilter):
+    """Filter Class for Date."""
+
     @classmethod
     def get(cls, approach: CloseApproach):
+        """Get desired value from CloseApproach."""
         return approach.time.date()
     
 class DistanceFilter(AttributeFilter):
+    """Filter Class for Distance."""
+
     @classmethod
     def get(cls, approach: CloseApproach):
+        """Get desired value from CloseApproach."""
         return approach.distance
     
 class VelocityFilter(AttributeFilter):
+    """Filter Class for Velocity."""
+
     @classmethod
     def get(cls, approach: CloseApproach):
+        """Get desired value from CloseApproach."""
         return approach.velocity
     
 class DiameterFilter(AttributeFilter):
+    """Filter Class for Diameter."""
+
     @classmethod
     def get(cls, approach: CloseApproach):
+        """Get desired value from CloseApproach."""
         return approach.neo.diameter
     
 class HazardousFilter(AttributeFilter):
+    """Filter Class for Hazardous."""
+
     @classmethod
     def get(cls, approach: CloseApproach):
+        """Get desired value from CloseApproach."""
         return approach.neo.hazardous
 
